@@ -1,0 +1,3 @@
+rootProject.name = 'EmailSchedulerAutomation'
+include 'email-schedule-service'
+
