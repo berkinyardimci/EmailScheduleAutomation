@@ -42,6 +42,7 @@ allprojects {
         annotationProcessor libs.lombok
         implementation libs.openapi
         implementation libs.springBootValidation
+        implementation libs.springCloudConfigClient
 
     }
 }

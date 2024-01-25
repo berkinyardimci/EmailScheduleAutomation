@@ -2,4 +2,5 @@ rootProject.name = 'EmailSchedulerAutomation'
 include 'email-schedule-service'
 include 'email-service'
 include 'config-server'
+include 'api-gateway-service'
 
