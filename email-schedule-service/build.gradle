@@ -8,6 +8,7 @@ dependencies{
     implementation libs.postgresql
     implementation libs.test
     implementation libs.quartz
+    implementation libs.springCloudConfigClient
 
 }
 test {

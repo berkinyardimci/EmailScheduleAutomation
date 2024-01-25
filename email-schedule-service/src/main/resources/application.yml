@@ -1,13 +1,8 @@
-server:
-  port: 9091
 spring:
-  datasource:
-    username: postgres
-    password: 1357
-    url: jdbc:postgresql://localhost:5432/EmailSchedule
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  cloud:
+    config:
+      uri: http://localhost:8888
+  config:
+    import: "configserver:"
+  application:
+    name: email-schedule-service
