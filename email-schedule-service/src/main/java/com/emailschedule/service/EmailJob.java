@@ -12,6 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class EmailJob implements Job {
+
     private final EmailService emailService;
 
     @Override
