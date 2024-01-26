@@ -1,0 +1,13 @@
+server:
+  port: 9092
+spring:
+  datasource:
+    username: postgres
+    password: 1357
+    url: jdbc:postgresql://localhost:5432/EmailAuth
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
