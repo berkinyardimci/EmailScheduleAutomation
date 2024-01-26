@@ -1,5 +1,7 @@
 package com.emailschedule.service;
 
+import com.emailschedule.entity.ScheduledEmail;
+import com.emailschedule.repository.ScheduledEmailRepository;
 import lombok.RequiredArgsConstructor;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -22,6 +24,6 @@ public class EmailJob implements Job {
         List<String> cc = (List<String>) jobDataMap.get("cc");
         List<String> bcc = (List<String>) jobDataMap.get("bcc");
 
-        emailService.sendEmail(emailReceiver, subject, content,cc,bcc);
+        emailService.sendEmail(emailReceiver, subject, content, cc, bcc);
     }
 }

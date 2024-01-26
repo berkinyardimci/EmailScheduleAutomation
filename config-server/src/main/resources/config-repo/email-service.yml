@@ -1,0 +1,15 @@
+server:
+  port: 9093
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: berkinyardimci98@gmail.com
+    password: rtmg xpyy toyc pmxm
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

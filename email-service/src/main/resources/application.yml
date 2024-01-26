@@ -5,4 +5,4 @@ spring:
   config:
     import: "configserver:"
   application:
-    name: api-gateway-service
+    name: email-service

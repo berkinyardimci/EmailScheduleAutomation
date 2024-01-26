@@ -56,6 +56,7 @@ public class ScheduleEmailService {
 
     private JobDetail buildJobDetail(JobDetailRequest jobDetailRequest) {
         JobDataMap jobDataMap = new JobDataMap();
+        jobDataMap.put("senderId", jobDetailRequest.getSenderId());
         jobDataMap.put("emailReceiver", jobDetailRequest.getEmailReceiver());
         jobDataMap.put("subject", jobDetailRequest.getSubject());
         jobDataMap.put("content", jobDetailRequest.getContent());
