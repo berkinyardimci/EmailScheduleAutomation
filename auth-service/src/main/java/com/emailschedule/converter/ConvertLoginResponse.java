@@ -4,7 +4,7 @@ import com.emailschedule.dto.response.LoginResponse;
 import com.emailschedule.entity.Auth;
 
 public class ConvertLoginResponse {
-    public static LoginResponse loginResponse(Auth auth, String token) {
+    public static LoginResponse loginResponse(String token) {
         return LoginResponse.builder()
                 .token(token)
                 //.roles(auth.getRoles())

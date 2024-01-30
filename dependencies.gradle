@@ -29,5 +29,7 @@ ext {
             springCloudCircuitBreaker: "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j:$versions.circuitBreaker",
             springCloudCircuitReactor: "org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j:$versions.circuitBreaker",
             javaJwt                  : "com.auth0:java-jwt:$versions.jwt",
+
+            springBootSecurity: "org.springframework.boot:spring-boot-starter-security:$versions.springBoot",
     ]
 }
