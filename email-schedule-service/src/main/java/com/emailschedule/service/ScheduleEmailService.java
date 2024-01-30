@@ -31,6 +31,7 @@ public class ScheduleEmailService {
     private final ScheduledEmailRepository scheduledEmailRepository;
 
     public void scheduleEmailSending(ScheduleEmailRequest emailRequest) throws SchedulerException {
+
         LocalDateTime localDateTime = ConvertToLocalDateTimeFromString.parseStringToLocalDateTime(emailRequest.getSendingDate());
 
         JobKey jobKey = new JobKey(CreateRandomJobKey.generateRandomKey(), "reports-job");
@@ -38,6 +39,7 @@ public class ScheduleEmailService {
 
         Trigger trigger = buildJobTrigger(jobDetail, localDateTime);
 
+        //convertor yaz
         ScheduledEmail scheduledEmail = ScheduledEmail.builder()
                 .senderId(emailRequest.getSenderId())
                 .emailReceiver(emailRequest.getEmailReceiver())
@@ -80,6 +82,7 @@ public class ScheduleEmailService {
                 .build();
     }
 
+    //config paketine taşı
     @Bean
     public Scheduler scheduler() throws SchedulerException {
         SchedulerFactory schedulerFactory = new org.quartz.impl.StdSchedulerFactory();

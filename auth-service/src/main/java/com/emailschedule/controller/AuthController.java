@@ -1,6 +1,8 @@
 package com.emailschedule.controller;
 
+import com.emailschedule.dto.request.LoginRequestDto;
 import com.emailschedule.dto.request.RegisterRequestDto;
+import com.emailschedule.dto.response.LoginResponse;
 import com.emailschedule.dto.response.RegisterResponse;
 import com.emailschedule.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +23,11 @@ public class AuthController {
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequestDto request) {
         RegisterResponse response = authService.register(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequestDto dto) {
+        LoginResponse responseDto = authService.login(dto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

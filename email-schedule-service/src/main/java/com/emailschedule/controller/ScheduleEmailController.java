@@ -6,6 +6,7 @@ import com.emailschedule.dto.request.ScheduleEmailRequest;
 import com.emailschedule.dto.response.FindAllScheduledEmailResponse;
 import com.emailschedule.service.ScheduleEmailService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.quartz.SchedulerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +18,19 @@ import java.util.List;
 @RequestMapping("/email")
 @RequiredArgsConstructor
 public class ScheduleEmailController {
+
     private final ScheduleEmailService scheduleEmailService;
 
+    //token headerdan okuyacaz
     @PostMapping("/schedule")
     public void scheduleEmail(@RequestBody ScheduleEmailRequest emailRequest) {
         try {
             scheduleEmailService.scheduleEmailSending(emailRequest);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); //logger yazazbiliriz Throw Edebiliriz.
         }
     }
+
     @PostMapping("/cancel")
     public void cancelSchedule(@RequestBody CancelRequest request) throws SchedulerException {
         scheduleEmailService.cancelEmailSending(request.getScheduledEmailId());
