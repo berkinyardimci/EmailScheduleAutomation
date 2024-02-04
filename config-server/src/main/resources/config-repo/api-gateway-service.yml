@@ -13,7 +13,11 @@ spring:
           predicates:
             - Path=/email/**
           uri: http://localhost:9091
+          filters:
+            - AuthenticationFilter
         - id: auth-service
           predicates:
             - Path=/auth/**
           uri: http://localhost:9092
+          filters:
+            - AuthenticationFilter
