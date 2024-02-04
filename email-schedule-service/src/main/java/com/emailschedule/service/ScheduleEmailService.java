@@ -5,13 +5,15 @@ import com.emailschedule.converter.ConvertJobDetailRequest;
 import com.emailschedule.dto.request.FindAllRequest;
 import com.emailschedule.dto.request.JobDetailRequest;
 import com.emailschedule.dto.request.ScheduleEmailRequest;
+import com.emailschedule.dto.response.CancelScheduleResponse;
 import com.emailschedule.dto.response.FindAllScheduledEmailResponse;
+import com.emailschedule.dto.response.ScheduleEmailResponse;
 import com.emailschedule.entity.ScheduledEmail;
 import com.emailschedule.entity.enums.Status;
 import com.emailschedule.repository.ScheduledEmailRepository;
-import com.emailschedule.util.ConvertToLocalDateTimeFromString;
-import com.emailschedule.util.ConvertToStringFromLocalDateTime;
+import com.emailschedule.util.ConvertDate;
 import com.emailschedule.util.CreateRandomJobKey;
+import com.emailschedule.util.FormatMessage;
 import lombok.RequiredArgsConstructor;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
@@ -30,22 +32,22 @@ public class ScheduleEmailService {
     private final Scheduler scheduler;
     private final ScheduledEmailRepository scheduledEmailRepository;
 
-    public void scheduleEmailSending(ScheduleEmailRequest emailRequest) throws SchedulerException {
+    public ScheduleEmailResponse scheduleEmailSending(ScheduleEmailRequest emailRequest) throws SchedulerException {
 
-        LocalDateTime localDateTime = ConvertToLocalDateTimeFromString.parseStringToLocalDateTime(emailRequest.getSendingDate());
+        LocalDateTime localDateTime = ConvertDate.parseStringToLocalDateTime(emailRequest.getSendingDate());
 
         JobKey jobKey = new JobKey(CreateRandomJobKey.generateRandomKey(), "reports-job");
         JobDetail jobDetail = buildJobDetail(ConvertJobDetailRequest.convertJobDetailRequest(emailRequest, jobKey));
 
         Trigger trigger = buildJobTrigger(jobDetail, localDateTime);
-
+        String dateString = ConvertDate.formatLocalDateTimeToString(localDateTime);
         //convertor yaz
         ScheduledEmail scheduledEmail = ScheduledEmail.builder()
                 .senderId(emailRequest.getSenderId())
                 .emailReceiver(emailRequest.getEmailReceiver())
                 .content(emailRequest.getContent())
                 .subject(emailRequest.getSubject())
-                .sendingDate(ConvertToStringFromLocalDateTime.formatLocalDateTimeToString(localDateTime))
+                .sendingDate(dateString)
                 .jobKey(jobKey.getName())
                 .status(Status.PENDING)
                 .cc(emailRequest.getCc())
@@ -54,6 +56,11 @@ public class ScheduleEmailService {
 
         scheduledEmailRepository.save(scheduledEmail);
         scheduler.scheduleJob(jobDetail, trigger);
+        return ScheduleEmailResponse.builder()
+                .receiverEmail(emailRequest.getEmailReceiver())
+                .sendingDate(dateString)
+                .message(FormatMessage.scheduleEmailResponseMessage(emailRequest.getEmailReceiver(),dateString))
+                .build();
     }
 
     private JobDetail buildJobDetail(JobDetailRequest jobDetailRequest) {
