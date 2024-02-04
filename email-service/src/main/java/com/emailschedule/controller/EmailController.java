@@ -1,7 +1,8 @@
 package com.emailschedule.controller;
 
-import com.emailschedule.model.SendEmailModel;
-import com.emailschedule.service.EmailSenderService;
+import com.emailschedule.model.ScheduledEmailModel;
+import com.emailschedule.imp.EmailSenderService;
+import com.emailschedule.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,13 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class EmailController {
 
-    private final EmailSenderService emailSenderService;
-
+    private final EmailService emailService;
 
     @PostMapping("/send")
-    public ResponseEntity<String> sendEmail(@RequestBody SendEmailModel sendEmailModel){
-        emailSenderService.sendMail(sendEmailModel);
+    public ResponseEntity<String> sendScheduledEmail(@RequestBody ScheduledEmailModel sendEmailModel){
+        emailService.sendCustomEmail(sendEmailModel);
 
+        return ResponseEntity.ok("ok");
+    }
+    @PostMapping("/send/login")
+    public ResponseEntity<String> sendPasswordReset(String email){
+        emailService.sendPasswordReset(email);
         return ResponseEntity.ok("ok");
     }
 }

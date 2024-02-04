@@ -1,6 +1,7 @@
-package com.emailschedule.service;
+package com.emailschedule.imp;
 
-import com.emailschedule.model.SendEmailModel;
+import com.emailschedule.model.ScheduledEmailModel;
+import com.emailschedule.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,11 +11,12 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class EmailSenderService {
+public class EmailSenderService implements EmailService {
 
    private final JavaMailSender javaMailSender;
 
-    public void sendMail(SendEmailModel sendEmailModel) {
+    @Override
+    public void sendCustomEmail(ScheduledEmailModel sendEmailModel) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 
         mailMessage.setFrom(sendEmailModel.getSender());
@@ -26,6 +28,11 @@ public class EmailSenderService {
         mailMessage.setBcc(convertListToArray(sendEmailModel.getBc()));
 
         javaMailSender.send(mailMessage);
+    }
+
+    @Override
+    public void sendPasswordReset(String email) {
+        //Todo: Giriş İşlemi için şifre gönderme
     }
 
     public static String[] convertListToArray(List<String> stringList) {
