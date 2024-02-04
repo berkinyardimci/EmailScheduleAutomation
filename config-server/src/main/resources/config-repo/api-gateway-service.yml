@@ -13,8 +13,7 @@ spring:
           predicates:
             - Path=/email/**
           uri: http://localhost:9091
-          filters:
-            - name: CircuitBreaker
-              args:
-                enabled: true
-                fallbackUri: forward:/fallback/email
+        - id: auth-service
+          predicates:
+            - Path=/auth/**
+          uri: http://localhost:9092

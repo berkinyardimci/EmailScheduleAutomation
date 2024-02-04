@@ -1,8 +1,15 @@
+server:
+  port: 8080
+
 spring:
-  cloud:
-    config:
-      uri: http://localhost:8888
-  config:
-    import: "configserver:"
+  main:
+    web-application-type: reactive
   application:
-    name: api-gateway-service
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+    config:
+      enabled: false

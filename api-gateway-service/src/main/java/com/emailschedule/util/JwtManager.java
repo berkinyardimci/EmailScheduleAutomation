@@ -4,8 +4,10 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Optional;
 
 @Component
@@ -15,7 +17,7 @@ public class JwtManager {
 
     String issuer = "scheduleEmail";
 
-    public Optional<String> getIdFromToken(String token){
+    public Optional<String> getEmailFromToken(String token){
 
         Algorithm algorithm = Algorithm.HMAC512(secretKey);
         JWTVerifier verifier = JWT.require(algorithm).withIssuer(issuer).build();
@@ -24,7 +26,7 @@ public class JwtManager {
         if(decodedJWT == null){
             throw new RuntimeException("Token Hatası");
         }
-        String email = decodedJWT.getClaim("id").asString();
+        String email = decodedJWT.getClaim("email").asString();
         return Optional.of(email);
     }
 }

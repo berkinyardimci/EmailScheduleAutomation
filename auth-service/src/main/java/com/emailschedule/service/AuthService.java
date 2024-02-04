@@ -36,7 +36,10 @@ public class AuthService {
     }
 
     public LoginResponse login(LoginRequestDto dto) {
-        Optional<Auth> auth = authRepository.findByEmailAndPassword(dto.getEmail(), dto.getPassword());
+        Optional<Auth> auth = authRepository.findByEmail(dto.getEmail());
+        if(!passwordEncoder.matches(dto.getPassword(), auth.get().getPassword())){
+            throw new RuntimeException("Şifreler Yanlış");
+        }
 
         return auth.map(validAuth -> {
                     String token = jwtTokenManager.createToken(validAuth)
