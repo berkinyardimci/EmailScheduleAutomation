@@ -4,6 +4,7 @@ server:
 spring:
   main:
     web-application-type: reactive
+    allow-circular-references: true
   application:
     name: api-gateway-service
   cloud:

@@ -5,7 +5,6 @@ import com.emailschedule.converter.ConvertJobDetailRequest;
 import com.emailschedule.dto.request.FindAllRequest;
 import com.emailschedule.dto.request.JobDetailRequest;
 import com.emailschedule.dto.request.ScheduleEmailRequest;
-import com.emailschedule.dto.response.CancelScheduleResponse;
 import com.emailschedule.dto.response.FindAllScheduledEmailResponse;
 import com.emailschedule.dto.response.ScheduleEmailResponse;
 import com.emailschedule.entity.ScheduledEmail;

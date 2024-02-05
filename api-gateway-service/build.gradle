@@ -8,6 +8,7 @@ dependencies{
     implementation libs.springCloudCircuitBreaker
     implementation libs.springCloudCircuitReactor
     implementation libs.javaJwt
+    implementation libs.springCloudOpenFeign
 
 
 }

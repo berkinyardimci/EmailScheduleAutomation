@@ -32,5 +32,6 @@ ext {
             javaJwt                  : "com.auth0:java-jwt:$versions.jwt",
 
             springBootSecurity       : "org.springframework.boot:spring-boot-starter-security:$versions.springBoot",
+
     ]
 }

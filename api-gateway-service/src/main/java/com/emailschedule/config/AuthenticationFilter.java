@@ -1,10 +1,12 @@
 package com.emailschedule.config;
 
+import com.emailschedule.client.AuthServiceClient;
 import com.emailschedule.util.JwtManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -21,23 +23,27 @@ import java.util.Optional;
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
 
     public static class Config {
-        // Eğer ihtiyacınız varsa, yapılandırma seçeneklerini buraya ekleyebilirsiniz
     }
 
     private final RouteValidator validator;
-    private final JwtManager jwtManager;
+    //private final JwtManager jwtManager;
+    private AuthServiceClient authServiceClient;
 
-    public AuthenticationFilter(RouteValidator validator, JwtManager jwtManager) {
+    @Autowired
+    public void setAuthServiceClient(AuthServiceClient authServiceClient) {
+        this.authServiceClient = authServiceClient;
+    }
+
+    public AuthenticationFilter(RouteValidator validator) {
         super(Config.class);
         this.validator = validator;
-        this.jwtManager = jwtManager;
+        //this.jwtManager = jwtManager;
     }
 
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
-
             if (validator.isSecured.test(request)) {
                 if (authMissing(request)) {
                     return onError(exchange, HttpStatus.UNAUTHORIZED);
@@ -48,11 +54,12 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     String token = authHeader.substring(7);
                     //autha istek Feign ile
-                    Optional<String> idFromToken = jwtManager.getEmailFromToken(token);
-                    if (!idFromToken.isPresent()) {
+                    Optional<String> emailFromToken = authServiceClient.getEmailFromToken(token);
+                    //ptional<String> emailFromToken = jwtManager.getEmailFromToken(token);
+                    if (!emailFromToken.isPresent()) {
                         return onError(exchange, HttpStatus.UNAUTHORIZED);
                     }
-                    populateRequestWithHeaders(exchange, idFromToken.get());
+                    populateRequestWithHeaders(exchange, emailFromToken.get());
                 }
             }
             return chain.filter(exchange);

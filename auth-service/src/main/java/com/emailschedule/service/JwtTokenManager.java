@@ -36,18 +36,16 @@ public class JwtTokenManager {
         return Optional.ofNullable(token);
     }
 
-    public Optional<Long> getAuthIdFromToken(String token) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC512(secretKey);
-            JWTVerifier verifier = JWT.require(algorithm).withIssuer(issuer).build();
-            DecodedJWT decodedJWT = verifier.verify(token);
-            if (decodedJWT == null) {
-                throw new RuntimeException("ErrorType.INVALID_TOKEN");
-            }
-            Long id = decodedJWT.getClaim("id").asLong();
-            return Optional.of(id);
-        } catch (Exception e) {
-            throw new RuntimeException("ErrorType.INVALID_TOKEN");
+    public Optional<String> getEmailFromToken(String token){
+
+        Algorithm algorithm = Algorithm.HMAC512(secretKey);
+        JWTVerifier verifier = JWT.require(algorithm).withIssuer(issuer).build();
+
+        DecodedJWT decodedJWT = verifier.verify(token);
+        if(decodedJWT == null){
+            throw new RuntimeException("Token Hatası");
         }
+        String email = decodedJWT.getClaim("email").asString();
+        return Optional.of(email);
     }
 }

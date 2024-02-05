@@ -25,7 +25,8 @@ public class ScheduleEmailController {
     private final ScheduleEmailService scheduleEmailService;
 
     @PostMapping("/schedule")
-    public ResponseEntity<ScheduleEmailResponse> scheduleEmail(@RequestBody ScheduleEmailRequest emailRequest) {
+    public ResponseEntity<ScheduleEmailResponse> scheduleEmail(@RequestBody ScheduleEmailRequest emailRequest,@RequestHeader("loggedInEmail") String email) {
+        System.out.println("Gelen emailll--- " + email);
         try {
             ScheduleEmailResponse response = scheduleEmailService.scheduleEmailSending(emailRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);

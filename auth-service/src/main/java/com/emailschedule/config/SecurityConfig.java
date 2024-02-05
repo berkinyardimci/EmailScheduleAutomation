@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final String[] WHITELIST = {"/swagger-ui/**", "/v3/api-docs/**", "/auth/register", "/auth/login","/auth/notsecure"};
+    private final String[] WHITELIST = {"/swagger-ui/**", "/v3/api-docs/**", "/auth/register", "/auth/login","/auth/getEmailFromToken"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
