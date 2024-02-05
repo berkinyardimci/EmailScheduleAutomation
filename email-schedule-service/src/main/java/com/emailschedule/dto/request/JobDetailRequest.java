@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 public class JobDetailRequest {
 
-    private Long senderId;
+    private String emailSender;
     private String emailReceiver;
     private String subject;
     private String content;

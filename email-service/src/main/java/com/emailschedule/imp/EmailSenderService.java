@@ -19,13 +19,13 @@ public class EmailSenderService implements EmailService {
     public void sendCustomEmail(ScheduledEmailModel sendEmailModel) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 
-        mailMessage.setFrom(sendEmailModel.getSender());
+        mailMessage.setFrom(sendEmailModel.getEmailSender());
         mailMessage.setTo(sendEmailModel.getEmailReceiver());
         mailMessage.setSubject(sendEmailModel.getSubject());
         mailMessage.setText(sendEmailModel.getContent());
 
         mailMessage.setCc(convertListToArray(sendEmailModel.getCc()));
-        mailMessage.setBcc(convertListToArray(sendEmailModel.getBc()));
+        mailMessage.setBcc(convertListToArray(sendEmailModel.getBcc()));
 
         javaMailSender.send(mailMessage);
     }

@@ -47,6 +47,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 String authHeader = authHeaders != null ? authHeaders.get(0) : null;
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     String token = authHeader.substring(7);
+                    //autha istek Feign ile
                     Optional<String> idFromToken = jwtManager.getEmailFromToken(token);
                     if (!idFromToken.isPresent()) {
                         return onError(exchange, HttpStatus.UNAUTHORIZED);

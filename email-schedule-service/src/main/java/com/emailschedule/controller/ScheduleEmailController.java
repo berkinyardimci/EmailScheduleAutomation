@@ -37,6 +37,8 @@ public class ScheduleEmailController {
 
     //Id yi clientten nasıl alalım?
     //ne döndürebiliriz
+    //Patche çevircez
+    //path variable
     @PostMapping("/cancel")
     public void cancelSchedule(@RequestBody CancelRequest request) throws SchedulerException {
         scheduleEmailService.cancelEmailSending(request.getScheduledEmailId());

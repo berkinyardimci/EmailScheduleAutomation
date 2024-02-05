@@ -8,10 +8,10 @@ import java.util.List;
 @Getter
 @Builder
 public class ScheduledEmailModel {
-    //private String sender;
+    private String emailSender;
     private String emailReceiver;
     private String subject;
     private String content;
     private List<String> cc;
-    private List<String> bc;
+    private List<String> bcc;
 }

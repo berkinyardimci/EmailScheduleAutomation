@@ -20,6 +20,7 @@ ext {
             test                     : "org.springframework.boot:spring-boot-starter-test:$versions.springBoot",
             quartz                   : "org.springframework.boot:spring-boot-starter-quartz:$versions.springBoot",
             springBootMailSender     : "org.springframework.boot:spring-boot-starter-mail:$versions.springBoot",
+            springCloudOpenFeign     : "org.springframework.cloud:spring-cloud-starter-openfeign:$versions.springCloud",
 
             springCloudConfigStarter : "org.springframework.cloud:spring-cloud-starter-config:$versions.springCloud",
             springCloudConfigClient  : "org.springframework.cloud:spring-cloud-config-client:$versions.springCloud",
@@ -30,6 +31,6 @@ ext {
             springCloudCircuitReactor: "org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j:$versions.circuitBreaker",
             javaJwt                  : "com.auth0:java-jwt:$versions.jwt",
 
-            springBootSecurity: "org.springframework.boot:spring-boot-starter-security:$versions.springBoot",
+            springBootSecurity       : "org.springframework.boot:spring-boot-starter-security:$versions.springBoot",
     ]
 }

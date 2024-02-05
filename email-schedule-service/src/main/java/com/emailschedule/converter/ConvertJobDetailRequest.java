@@ -11,7 +11,7 @@ public class ConvertJobDetailRequest {
                 .emailReceiver(emailRequest.getEmailReceiver())
                 .subject(emailRequest.getSubject())
                 .content(emailRequest.getContent())
-                .senderId(emailRequest.getSenderId())
+                .emailSender(emailRequest.getEmailSender())
                 .cc(emailRequest.getCc())
                 .bc(emailRequest.getBc())
                 .jobKey(jobKey)

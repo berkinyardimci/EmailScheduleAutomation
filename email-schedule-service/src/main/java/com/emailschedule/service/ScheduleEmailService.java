@@ -41,9 +41,10 @@ public class ScheduleEmailService {
 
         Trigger trigger = buildJobTrigger(jobDetail, localDateTime);
         String dateString = ConvertDate.formatLocalDateTimeToString(localDateTime);
+
         //convertor yaz
+        //private method
         ScheduledEmail scheduledEmail = ScheduledEmail.builder()
-                .senderId(emailRequest.getSenderId())
                 .emailReceiver(emailRequest.getEmailReceiver())
                 .content(emailRequest.getContent())
                 .subject(emailRequest.getSubject())
@@ -66,9 +67,9 @@ public class ScheduleEmailService {
     private JobDetail buildJobDetail(JobDetailRequest jobDetailRequest) {
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("emailReceiver", jobDetailRequest.getEmailReceiver());
+        jobDataMap.put("emailSender", jobDetailRequest.getEmailSender());
         jobDataMap.put("subject", jobDetailRequest.getSubject());
         jobDataMap.put("content", jobDetailRequest.getContent());
-        jobDataMap.put("senderId", jobDetailRequest.getSenderId());
         jobDataMap.put("cc", jobDetailRequest.getCc());
         jobDataMap.put("bcc", jobDetailRequest.getBc());
 
