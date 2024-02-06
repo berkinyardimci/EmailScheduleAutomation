@@ -9,7 +9,6 @@ import java.util.List;
 @Builder
 public class ScheduleEmailRequest {
 
-    private String emailSender;
     private String emailReceiver;
     private String subject;
     private String content;

@@ -8,6 +8,7 @@ public class ConvertFindAllScheduleResponse {
 
     public static FindAllScheduledEmailResponse convertToFindAllScheduledEmail(ScheduledEmail scheduledEmail) {
         return FindAllScheduledEmailResponse.builder()
+                .id(scheduledEmail.getId())
                 .emailReceiver(scheduledEmail.getEmailReceiver())
                 .subject(scheduledEmail.getSubject())
                 .content(scheduledEmail.getContent())

@@ -1,14 +1,12 @@
 package com.emailschedule.controller;
 
-import com.emailschedule.dto.request.CancelRequest;
-import com.emailschedule.dto.request.FindAllRequest;
 import com.emailschedule.dto.request.ScheduleEmailRequest;
 import com.emailschedule.dto.response.CancelScheduleResponse;
 import com.emailschedule.dto.response.FindAllScheduledEmailResponse;
 import com.emailschedule.dto.response.ScheduleEmailResponse;
+import com.emailschedule.entity.enums.Status;
 import com.emailschedule.service.ScheduleEmailService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.parser.Authorization;
 import org.quartz.SchedulerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +22,11 @@ public class ScheduleEmailController {
 
     private final ScheduleEmailService scheduleEmailService;
 
+
     @PostMapping("/schedule")
     public ResponseEntity<ScheduleEmailResponse> scheduleEmail(@RequestBody ScheduleEmailRequest emailRequest,@RequestHeader("loggedInEmail") String email) {
-        System.out.println("Gelen emailll--- " + email);
         try {
-            ScheduleEmailResponse response = scheduleEmailService.scheduleEmailSending(emailRequest);
+            ScheduleEmailResponse response = scheduleEmailService.scheduleEmailSending(emailRequest,email);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,19 +34,19 @@ public class ScheduleEmailController {
         }
     }
 
-    //Id yi clientten nasıl alalım?
-    //ne döndürebiliriz
+
     //Patche çevircez
     //path variable
-    @PostMapping("/cancel")
-    public void cancelSchedule(@RequestBody CancelRequest request) throws SchedulerException {
-        scheduleEmailService.cancelEmailSending(request.getScheduledEmailId());
+    @PatchMapping("/cancel/{scheduleId}")
+    public ResponseEntity<CancelScheduleResponse> cancelSchedule(@PathVariable Long scheduleId) throws SchedulerException {
+        CancelScheduleResponse cancelScheduleResponse = scheduleEmailService.cancelEmailSending(scheduleId);
+        return new ResponseEntity<>(cancelScheduleResponse, HttpStatus.OK);
     }
 
     //TODO: id yerine email alacaz
     @GetMapping("/status")
-    public ResponseEntity<List<FindAllScheduledEmailResponse>> getAllScheduledEmailsByStatus(@RequestBody FindAllRequest findAllRequest) {
-        List<FindAllScheduledEmailResponse> scheduledEmails = scheduleEmailService.findAllScheduledEmailByStatus(findAllRequest);
+    public ResponseEntity<List<FindAllScheduledEmailResponse>> getAllScheduledEmailsByStatus(@RequestParam Status status, @RequestHeader("loggedInEmail") String email) {
+        List<FindAllScheduledEmailResponse> scheduledEmails = scheduleEmailService.findAllScheduledEmailByStatus(status,email);
         return new ResponseEntity<>(scheduledEmails, HttpStatus.OK);
     }
 

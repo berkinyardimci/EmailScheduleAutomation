@@ -21,6 +21,7 @@ public class ScheduledEmail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long senderId;
+    private String senderEmail;
     private String emailReceiver;
     private String subject;
     private String content;

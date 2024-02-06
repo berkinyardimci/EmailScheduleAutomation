@@ -26,7 +26,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     }
 
     private final RouteValidator validator;
-    //private final JwtManager jwtManager;
     private AuthServiceClient authServiceClient;
 
     @Autowired
@@ -37,7 +36,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     public AuthenticationFilter(RouteValidator validator) {
         super(Config.class);
         this.validator = validator;
-        //this.jwtManager = jwtManager;
     }
 
     @Override
@@ -53,9 +51,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 String authHeader = authHeaders != null ? authHeaders.get(0) : null;
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     String token = authHeader.substring(7);
-                    //autha istek Feign ile
                     Optional<String> emailFromToken = authServiceClient.getEmailFromToken(token);
-                    //ptional<String> emailFromToken = jwtManager.getEmailFromToken(token);
                     if (!emailFromToken.isPresent()) {
                         return onError(exchange, HttpStatus.UNAUTHORIZED);
                     }
@@ -82,57 +78,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 .header("loggedInEmail", email)
                 .build();
     }
-    /*
-    @Autowired
-    private RouteValidator validator;
-
-    @Autowired
-    private JwtManager jwtManager;
-
-
-    @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        ServerHttpRequest request = exchange.getRequest();
-
-        if (validator.isSecured.test(request)) {
-            if (authMissing(request)) {
-                return onError(exchange, HttpStatus.UNAUTHORIZED);
-            }
-
-            String authHeader = request.getHeaders().getOrEmpty("Authorization").get(0);
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                authHeader = authHeader.substring(7);
-            }
-
-            System.out.println(authHeader);
-
-            Optional<String> idFromToken = jwtManager.getEmailFromToken(authHeader);
-            System.out.println(idFromToken.get());
-            if (!idFromToken.isPresent()) {
-                return onError(exchange, HttpStatus.UNAUTHORIZED);
-            }
-            populateRequestWithHeaders(exchange, idFromToken.get());
-        }
-        return chain.filter(exchange);
-    }
-
-    private Mono<Void> onError(ServerWebExchange exchange, HttpStatus httpStatus) {
-        ServerHttpResponse response = exchange.getResponse();
-        response.setStatusCode(httpStatus);
-        return response.setComplete();
-    }
-
-    private boolean authMissing(ServerHttpRequest request) {
-        return !request.getHeaders().containsKey("Authorization");
-    }
-
-    private void populateRequestWithHeaders(ServerWebExchange exchange, String email) {
-        exchange.getRequest().mutate()
-                .header("loggedInEmail", email)
-                .build();
-    }
-
-     */
 }
 
 

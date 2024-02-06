@@ -9,7 +9,6 @@ dependencies{
     implementation libs.test
     implementation libs.javaJwt
     implementation libs.springBootSecurity
-    implementation libs.springCloudOpenFeign
 
 
 }

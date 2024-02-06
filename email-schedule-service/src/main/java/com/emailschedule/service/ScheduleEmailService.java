@@ -2,9 +2,9 @@ package com.emailschedule.service;
 
 import com.emailschedule.converter.ConvertFindAllScheduleResponse;
 import com.emailschedule.converter.ConvertJobDetailRequest;
-import com.emailschedule.dto.request.FindAllRequest;
 import com.emailschedule.dto.request.JobDetailRequest;
 import com.emailschedule.dto.request.ScheduleEmailRequest;
+import com.emailschedule.dto.response.CancelScheduleResponse;
 import com.emailschedule.dto.response.FindAllScheduledEmailResponse;
 import com.emailschedule.dto.response.ScheduleEmailResponse;
 import com.emailschedule.entity.ScheduledEmail;
@@ -31,12 +31,12 @@ public class ScheduleEmailService {
     private final Scheduler scheduler;
     private final ScheduledEmailRepository scheduledEmailRepository;
 
-    public ScheduleEmailResponse scheduleEmailSending(ScheduleEmailRequest emailRequest) throws SchedulerException {
+    public ScheduleEmailResponse scheduleEmailSending(ScheduleEmailRequest emailRequest, String email) throws SchedulerException {
 
         LocalDateTime localDateTime = ConvertDate.parseStringToLocalDateTime(emailRequest.getSendingDate());
 
         JobKey jobKey = new JobKey(CreateRandomJobKey.generateRandomKey(), "reports-job");
-        JobDetail jobDetail = buildJobDetail(ConvertJobDetailRequest.convertJobDetailRequest(emailRequest, jobKey));
+        JobDetail jobDetail = buildJobDetail(ConvertJobDetailRequest.convertJobDetailRequest(emailRequest, jobKey, email));
 
         Trigger trigger = buildJobTrigger(jobDetail, localDateTime);
         String dateString = ConvertDate.formatLocalDateTimeToString(localDateTime);
@@ -44,6 +44,7 @@ public class ScheduleEmailService {
         //convertor yaz
         //private method
         ScheduledEmail scheduledEmail = ScheduledEmail.builder()
+                .senderEmail(email)
                 .emailReceiver(emailRequest.getEmailReceiver())
                 .content(emailRequest.getContent())
                 .subject(emailRequest.getSubject())
@@ -59,7 +60,7 @@ public class ScheduleEmailService {
         return ScheduleEmailResponse.builder()
                 .receiverEmail(emailRequest.getEmailReceiver())
                 .sendingDate(dateString)
-                .message(FormatMessage.scheduleEmailResponseMessage(emailRequest.getEmailReceiver(),dateString))
+                .message(FormatMessage.scheduleEmailResponseMessage(emailRequest.getEmailReceiver(), dateString))
                 .build();
     }
 
@@ -97,15 +98,16 @@ public class ScheduleEmailService {
         return scheduler;
     }
 
-    public void cancelEmailSending(Long scheduledEmailId) throws SchedulerException {
+    public CancelScheduleResponse cancelEmailSending(Long scheduledEmailId) throws SchedulerException {
         JobKey jobKey = findJobKeyByEmail(scheduledEmailId);
         if (jobKey != null) {
             scheduler.deleteJob(jobKey);
             changeStatusToCanceled(scheduledEmailId);
-            System.out.println("Email sending for user is canceled.");
-        } else {
-            System.out.println("No scheduled email found for user ");
+            return CancelScheduleResponse.builder()
+                    .message("Başarılı bir şekilde iptal edilmiştir.")
+                    .build();
         }
+        return null;
     }
 
     private void changeStatusToCanceled(Long scheduledEmailId) {
@@ -113,6 +115,7 @@ public class ScheduleEmailService {
         scheduledEmail.setStatus(Status.CANCELLED);
         scheduledEmailRepository.save(scheduledEmail);
     }
+
     private JobKey findJobKeyByEmail(Long scheduledEmailId) throws SchedulerException {
         ScheduledEmail scheduledEmail = scheduledEmailRepository.findById(scheduledEmailId).orElse(null);
         return scheduler.getJobKeys(GroupMatcher.jobGroupEquals("reports-job"))
@@ -122,13 +125,12 @@ public class ScheduleEmailService {
                 .orElse(null);
     }
 
-    public List<FindAllScheduledEmailResponse> findAllScheduledEmailByStatus(FindAllRequest findAllRequest) {
-        List<ScheduledEmail> scheduledEmails = scheduledEmailRepository.findAllByStatusAndSenderId(findAllRequest.getStatus(), findAllRequest.getSenderId());
+    public List<FindAllScheduledEmailResponse> findAllScheduledEmailByStatus(Status status, String email) {
+        List<ScheduledEmail> scheduledEmails = scheduledEmailRepository.findAllByStatusAndSenderEmail(status, email);
         return scheduledEmails.stream()
                 .map(scheduledEmail -> ConvertFindAllScheduleResponse.convertToFindAllScheduledEmail(scheduledEmail))
                 .collect(Collectors.toList());
     }
-
 
 
 }

@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface ScheduledEmailRepository extends JpaRepository<ScheduledEmail,Long> {
 
-    List<ScheduledEmail> findAllByStatusAndSenderId(Status status, Long id);
+    List<ScheduledEmail> findAllByStatusAndSenderEmail(Status status, String email);
 }
 

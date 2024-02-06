@@ -1,6 +1,7 @@
 package com.emailschedule.service;
 
 import com.emailschedule.model.ScheduledEmailModel;
+import com.emailschedule.repository.ScheduledEmailRepository;
 import lombok.RequiredArgsConstructor;
 import org.quartz.Job;
 import org.quartz.JobDataMap;

@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 @Builder
 public class FindAllScheduledEmailResponse {
+    private Long id;
     private String emailReceiver;
     private String subject;
     private String content;
