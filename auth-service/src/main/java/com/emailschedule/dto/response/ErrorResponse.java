@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LoginResponse {
-    private boolean isSuccess;
-    private String token;
-    //private Set<ERole> roles;
+public class ErrorResponse {
+        private String message;
+        private Boolean isSuccess;
 }

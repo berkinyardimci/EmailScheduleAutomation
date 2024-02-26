@@ -34,9 +34,6 @@ public class ScheduleEmailController {
         }
     }
 
-
-    //Patche çevircez
-    //path variable
     @PatchMapping("/cancel/{scheduleId}")
     public ResponseEntity<CancelScheduleResponse> cancelSchedule(@PathVariable Long scheduleId) throws SchedulerException {
         CancelScheduleResponse cancelScheduleResponse = scheduleEmailService.cancelEmailSending(scheduleId);

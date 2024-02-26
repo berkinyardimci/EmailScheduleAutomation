@@ -70,8 +70,10 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
     private boolean authMissing(ServerHttpRequest request) {
         HttpHeaders headers = request.getHeaders();
+        //assert headers.isEmpty();
         return !headers.containsKey(HttpHeaders.AUTHORIZATION) || headers.get(HttpHeaders.AUTHORIZATION).isEmpty();
     }
+
 
     private void populateRequestWithHeaders(ServerWebExchange exchange, String email) {
         exchange.getRequest().mutate()
