@@ -8,9 +8,10 @@ public class ConvertDate {
     //Farklı ülkelerde nasıl handle edebiliriz
     //farklı time zonelarda
     //requestten hangi time zone alabiliriz.
-    public static LocalDateTime parseStringToLocalDateTime(String dateTimeString) {
+    public static LocalDateTime parseStringToLocalDateTime(String sendingDate, String sendingTime) {
+        String willSendDate = sendingDate + " " + sendingTime;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return LocalDateTime.parse(dateTimeString, dateTimeFormatter);
+        return LocalDateTime.parse(willSendDate, dateTimeFormatter);
     }
 
     public static String formatLocalDateTimeToString(LocalDateTime localDateTime) {

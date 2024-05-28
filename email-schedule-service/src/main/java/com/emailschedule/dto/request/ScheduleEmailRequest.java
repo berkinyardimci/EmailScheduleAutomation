@@ -13,6 +13,7 @@ public class ScheduleEmailRequest {
     private String subject;
     private String content;
     private String sendingDate;
+    private String sendingTime;
     private List<String> cc;
     private List<String> bc;
 }

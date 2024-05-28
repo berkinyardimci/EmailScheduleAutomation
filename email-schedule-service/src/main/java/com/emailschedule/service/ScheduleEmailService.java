@@ -33,7 +33,7 @@ public class ScheduleEmailService {
 
     public ScheduleEmailResponse scheduleEmailSending(ScheduleEmailRequest emailRequest, String email) throws SchedulerException {
 
-        LocalDateTime localDateTime = ConvertDate.parseStringToLocalDateTime(emailRequest.getSendingDate());
+        LocalDateTime localDateTime = ConvertDate.parseStringToLocalDateTime(emailRequest.getSendingDate(),emailRequest.getSendingTime());
 
         JobKey jobKey = new JobKey(CreateRandomJobKey.generateRandomKey(), "reports-job");
         JobDetail jobDetail = buildJobDetail(ConvertJobDetailRequest.convertJobDetailRequest(emailRequest, jobKey, email));

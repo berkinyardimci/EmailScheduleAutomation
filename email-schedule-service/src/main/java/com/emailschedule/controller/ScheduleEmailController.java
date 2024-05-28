@@ -40,7 +40,6 @@ public class ScheduleEmailController {
         return new ResponseEntity<>(cancelScheduleResponse, HttpStatus.OK);
     }
 
-    //TODO: id yerine email alacaz
     @GetMapping("/status")
     public ResponseEntity<List<FindAllScheduledEmailResponse>> getAllScheduledEmailsByStatus(@RequestParam Status status, @RequestHeader("loggedInEmail") String email) {
         List<FindAllScheduledEmailResponse> scheduledEmails = scheduleEmailService.findAllScheduledEmailByStatus(status,email);
